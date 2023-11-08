@@ -2,7 +2,181 @@
 #include <stdlib.h>
 #include <string.h>
 
-int isQuit = 0;
+void reverseList(int arr[], int size)
+{
+    int start = size - 8;
+    if (size == 8)
+    {
+        start = 0;
+    }
+
+    int end = size - 1;
+
+    while (start < end)
+    {
+        int temp = arr[start];
+        arr[start] = arr[end];
+        arr[end] = temp;
+
+        start++;
+        end--;
+    }
+}
+
+void bibine(int n, int tab[33], int size)
+{
+    int temp = 0;
+    int bin = 0;
+    int init = size - 8;
+    if (size == 8)
+    {
+        int init = 0;
+    }
+    for (int i = init; i < size; i++)
+    {
+
+        if (n % 2 == 0)
+        {
+            tab[i] = 0;
+            n /= 2;
+        }
+        else
+        {
+            tab[i] = 1;
+            n /= 2;
+        }
+    }
+    reverseList(tab, size);
+}
+
+void networkAdress(int ip[33], int mask[33], int networkAdress[33])
+{
+    int networkSum = 0;
+    for (int i = 0; i < 33; i++)
+    {
+        if (ip[i] + mask[i] == 2)
+        {
+            networkAdress[i] = 1;
+        }
+        else
+        {
+            networkAdress[i] = 0;
+        }
+    }
+}
+
+int sameNetwork(int tab1[33], int tab2[33])
+{
+    int verif = 0;
+    for (int i = 0; i < 33; i++)
+    {
+        if (tab1[i] != tab2[i])
+        {
+            verif = 1;
+        }
+    }
+    return verif;
+}
+
+void splitIP(int tab[], char ip[])
+{
+    char copy[strlen(ip) + 1];
+    strcpy(copy, ip);
+
+    char *traitement = NULL;
+    int i = 0;
+
+    traitement = strtok(copy, ".");
+
+    while (traitement != NULL && i < 4)
+    {
+        tab[i++] = atoi(traitement);
+        traitement = strtok(NULL, ".");
+    }
+}
+
+int search()
+{
+    char ip[13] = "\0";
+    char mask[13] = "\0";
+    int ipTab[5];
+    int maskTab[5];
+    int binIp[33];
+    int binMask[33];
+    int size = 0;
+    int size2 = 0;
+    int networkAdressMyTab[33];
+    int networkAdressTab[33];
+    printf("Enter address:\n");
+    scanf("%s", ip);
+    printf("Enter mask;\n");
+    scanf("%s", mask);
+
+    splitIP(ipTab, ip);
+    splitIP(maskTab, mask);
+
+    for (int j = 0; j < 4; j++)
+    {
+        size += 8;
+        bibine(ipTab[j], binIp, size);
+    }
+
+    for (int v = 0; v < 4; v++)
+    {
+        size2 += 8;
+        bibine(maskTab[v], binMask, size2);
+    }
+
+    networkAdress(binIp, binMask, networkAdressMyTab);
+
+    FILE *file = fopen("data.csv", "r");
+
+  if (file == NULL)
+    {
+        printf("Failed to open the file for reading.\n");
+        return 1;
+    }
+    char line[1024];
+
+    while (fgets(line, sizeof(line), file) != NULL)
+    {
+        int verif = 0;
+        char *id = "\0";
+        char *ip_address = "\0";
+        char *maskchar = "\0";
+        size = 0;
+        size2 = 0;
+        id = strtok(line, ",");
+        ip_address = strtok(NULL, ",");
+        maskchar = strtok(NULL, ",");
+        splitIP(ipTab, ip_address);
+        splitIP(maskTab, maskchar);
+        for (int j = 0; j < 4; j++)
+        {
+            size += 8;
+            bibine(ipTab[j], binIp, size);
+        }
+        for (int v = 0; v < 4; v++)
+        {
+            size2 += 8;
+            bibine(maskTab[v], binMask, size2);
+        }
+        networkAdress(binIp, binMask, networkAdressTab);
+        verif = sameNetwork(networkAdressMyTab, networkAdressTab);
+        int line_id;
+        if (sscanf(line, "%d", &line_id) == 1)
+        {
+            if (verif == 0)
+            {
+                printf("[%s]. \n", id);
+                printf("      IP Address : %s \n", ip_address);
+                printf("      Mask : %s \n", maskchar);
+            }
+        }
+    }
+    fclose(file);
+    return 0;
+}
 
 //  TO GET HOLD OF THE LAST INSERTED DATA'S ID
 int get_Id()
@@ -32,61 +206,10 @@ int get_Id()
     return last_id;
 }
 
-// Fonction pour vérifier si un segment de chaîne est un octet IP valide
-int estSegmentValide(char* segment) {
-    int num = atoi(segment);
-    // Vérifie si le segment est entre 1 et 255
-    if (num >= 1 && num <= 255) {
-        // Vérifie l'absence de zéros non significatifs
-        if (segment[0] != '0' || (segment[0] == '0' && segment[1] == '\0')) {
-            return 1;
-        }
-    }else if (num == 0)
-    {
-        return 1;
-    }
-    
-    return 0;
-}
-
-// Fonction pour vérifier si l'entrée est une adresse IP valide
-int estAdresseIPValide(char* ip) {
-    int nbSegments = 0;
-    int dernierCaractere = -1; // Suivre le dernier caractère traité
-    char segmentCourant[4]; // Segment d'adresse IP à vérifier
-
-    for (int i = 0; i <= strlen(ip); i++) {
-        // Si le caractère actuel est un point ou la fin de la chaîne
-        if (ip[i] == '.' || ip[i] == '\0') {
-            // Vérifier l'existence de points consécutifs ou de segment vide
-            if (dernierCaractere + 1 == i || i - dernierCaractere > 4) {
-                return 0;
-            }
-            // Terminer la chaîne de segment
-            strncpy(segmentCourant, ip + dernierCaractere + 1, i - dernierCaractere - 1);
-            segmentCourant[i - dernierCaractere - 1] = '\0';
-
-            // Vérifier si le segment est valide
-            if (!estSegmentValide(segmentCourant)) {
-                return 0;
-            }
-            dernierCaractere = i;
-            nbSegments++; // Augmenter le compte de segments
-        } else if (ip[i] < '0' || ip[i] > '9') {
-            // Les caractères autres que les chiffres et le point ne sont pas autorisés
-            return 0;
-        }
-    }
-    // L'adresse IP doit contenir exactement 4 segments
-    return nbSegments == 4;
-}
-
-
 // ADD NEW IP/MASK INTO DATA.CSV
-void add_ip()
+int add_ip()
 {
     int id;
-    char verif_ip[16];
     char ip_address[33], mask[33];
 
     int last_id = get_Id();
@@ -100,60 +223,10 @@ void add_ip()
         return 1;
     }
 
-
-    // Demande à l'utilisateur de saisir une adresse IP
     printf("Enter IP Address : ");
-    sscanf("%15s", verif_ip);
-
-    
-    // Valide l'adresse IP
-    if (estAdresseIPValide(verif_ip)) {
-        printf("L'adresse IP est valide.\n");
-        for (int i = 0; i < 15; i++)
-        {
-            ip_address[i] = verif_ip[i];
-        }
-        
-    } else {
-        while (!estAdresseIPValide(verif_ip))
-        {
-            printf("L'adresse IP est invalide.\n");
-            printf("Veuillez entrer une autre adresse IP: ");
-            scanf("%15s", verif_ip);
-        }
-        printf("L'adresse IP est valide.\n");
-        for (int i = 0; i < 15; i++)
-        {
-            ip_address[i] = verif_ip[i];
-        }
-        
-    }
-
+    scanf("%s", ip_address);
     printf("Enter Mask Address : ");
-    scanf("%s", verif_ip);
-
-        // Valide l'adresse IP
-    if (estAdresseIPValide(verif_ip)) {
-        printf("Le Mask est valide.\n");
-        for (int i = 0; i < 15; i++)
-        {
-            mask[i] = verif_ip[i];
-        }
-        
-    } else {
-        while (!estAdresseIPValide(verif_ip))
-        {
-            printf("Le Mask est invalide.\n");
-            printf("Veuillez entrer un autre Mask: ");
-            scanf("%15s", verif_ip);
-        }
-        printf("Le Mask est valide.\n");
-        for (int i = 0; i < 15; i++)
-        {
-            mask[i] = verif_ip[i];
-        }
-        
-    }
+    scanf("%s", mask);
 
     fprintf(file, "\n%d, %s, %s", id, ip_address, mask);
 
@@ -162,17 +235,22 @@ void add_ip()
     printf("\n\n");
 
     fclose(file);
+    return 0;
 }
 
 //  TO PRINTOUT THE LIST OF IP ADDRESSES
 int list_ip()
 {
     FILE *file = fopen("data.csv", "r");
+    int ipTab[5];
+    int maskTab[5];
+    int binIp[32];
+    int binMask[32];
 
     if (file == NULL)
     {
         printf("Failed to open the file for reading.\n");
-        return 1;
+        return 0;
     }
 
     char line[1024];
@@ -183,21 +261,58 @@ int list_ip()
 
     while (fgets(line, sizeof(line), file) != NULL)
     {
-        // Split the line into tokens using strtok
+        int size = 0;
+        int size2 = 0;
         char *id = strtok(line, ",");
         char *ip_address = strtok(NULL, ",");
         char *mask = strtok(NULL, ",");
+
+        splitIP(ipTab, ip_address);
+        splitIP(maskTab, mask);
+
+        for (int j = 0; j < 4; j++)
+        {
+            size += 8;
+            bibine(ipTab[j], binIp, size);
+        }
+
+        for (int v = 0; v < 4; v++)
+        {
+            size2 += 8;
+            bibine(maskTab[v], binMask, size2);
+        }
 
         int line_id;
         if (sscanf(line, "%d", &line_id) == 1)
         {
             printf("[%s]. \n", id);
             printf("      IP Address : %s\n", ip_address);
+            printf("      Binaire ip : ");
+            for (int i = 0; i < 32; i++)
+            {
+                if (i % 8 == 0 && i != 0)
+                {
+                    printf(".");
+                }
+                printf("%d", binIp[i]);
+            }
+            printf("\n");
             printf("      Mask : %s\n", mask);
+            printf("      Binaire mask : ");
+            for (int i = 0; i < 32; i++)
+            {
+                if (i % 8 == 0 && i != 0)
+                {
+                    printf(".");
+                }
+                printf("%d", binMask[i]);
+            }
+            printf("\n");
         }
     }
 
     fclose(file);
+    return 0;
 }
 
 // PRINTOUT THE INTOR/HEADER PART (LOGO,GROUP-INFO,.....)
@@ -228,12 +343,12 @@ int main()
 
     logo();
 
-    char select;
+    char select=' ';
 
-    while (isQuit == 0)
+    while (select != 'q')
     {
         printf("Please choose one : ");
-        scanf(" %c", &select);
+        scanf("%c", &select);
 
         switch (select)
         {
@@ -244,14 +359,15 @@ int main()
             list_ip();
             break;
         case 's':
-            //  SEARCH FUNCTION
+            search();
             break;
         case 'd':
             //  DELETE FUNCTION
             break;
         case 'q':
+
             printf("Exiting....");
-            isQuit = 1;
+            exit(1);
             break;
         default:
             printf("Please choose one from these options. \n");
