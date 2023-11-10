@@ -142,7 +142,6 @@ int search()
     int binIp[33];
     int binMask[33];
     int size = 0;
-    int size2 = 0;
     int networkAdressMyTab[33];
     int networkAdressTab[33];
     printf("Enter address:\n");
@@ -158,11 +157,11 @@ int search()
         size += 8;
         bibine(ipTab[j], binIp, size);
     }
-
+    size=0;
     for (int v = 0; v < 4; v++)
     {
-        size2 += 8;
-        bibine(maskTab[v], binMask, size2);
+        size += 8;
+        bibine(maskTab[v], binMask, size);
     }
 
     networkAdress(binIp, binMask, networkAdressMyTab);
@@ -183,7 +182,6 @@ int search()
         char *ip_address = "\0";
         char *maskchar = "\0";
         size = 0;
-        size2 = 0;
         id = strtok(line, ",");
         ip_address = strtok(NULL, ",");
         maskchar = strtok(NULL, ",");
@@ -194,10 +192,11 @@ int search()
             size += 8;
             bibine(ipTab[j], binIp, size);
         }
+        size=0;
         for (int v = 0; v < 4; v++)
         {
-            size2 += 8;
-            bibine(maskTab[v], binMask, size2);
+            size += 8;
+            bibine(maskTab[v], binMask, size);
         }
         networkAdress(binIp, binMask, networkAdressTab);
         verif = sameNetwork(networkAdressMyTab, networkAdressTab);
