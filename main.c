@@ -342,7 +342,7 @@ int add_ip()
     verif_mask += verifPoint(mask);
     if (verif_ip == 7 && verif_mask == 7)
     {
-        fprintf(file, "%d, %s, %s", id, ip_address, mask);
+        fprintf(file, "\n%d, %s, %s", id, ip_address, mask);
         printf("\n\n");
         printf("The IP Address : %s and The Mask : %s are added successfully!", ip_address, mask);
         printf("\n\n");
@@ -401,38 +401,34 @@ int list_ip()
             bibine(maskTab[v], binMask, size);
         }
 
-        int line_id;
-        if (sscanf(line, "%d", &line_id) == 1)
-        {
-            printf("[%s]. \n", id);
-            printf("      IP Address : %s\n", ip_address);
-            printf("      Binaire ip : ");
+        printf("[%s]. \n", id);
+        printf("      IP Address : %s\n", ip_address);
+        printf("      Binaire ip : ");
 
-            for (int i = 0; i < 32; i++)
+        for (int i = 0; i < 32; i++)
+        {
+            if (i % 8 == 0 && i != 0)
             {
-                if (i % 8 == 0 && i != 0)
-                {
-                    printf(".");
-                }
-                printf("%d", binIp[i]);
+                printf(".");
             }
-            printf("\n");
-            printf("      Hexa ip :");
-            hexa(ipTab);
-            printf("      Mask : %s", mask);
-            printf("      Binaire mask : ");
-            for (int i = 0; i < 32; i++)
-            {
-                if (i % 8 == 0 && i != 0)
-                {
-                    printf(".");
-                }
-                printf("%d", binMask[i]);
-            }
-            printf("\n");
-            printf("      Hexa mask :");
-            hexa(maskTab);
+            printf("%d", binIp[i]);
         }
+        printf("\n");
+        printf("      Hexa ip :");
+        hexa(ipTab);
+        printf("      Mask : %s", mask);
+        printf("      Binaire mask : ");
+        for (int i = 0; i < 32; i++)
+        {
+            if (i % 8 == 0 && i != 0)
+            {
+                printf(".");
+            }
+            printf("%d", binMask[i]);
+        }
+        printf("\n");
+        printf("      Hexa mask :");
+        hexa(maskTab);
     }
 
     fclose(file);
@@ -449,6 +445,8 @@ void logo()
     printf("\n\n");
     printf("Created by : \n\n");
     printf("    1.  JANVIER Enstso \n");
+    printf("    2.  OUCHERIF Lounis \n");
+    printf("    3.  FERNANDO PRICARD Diron Polson \n");
     printf("\n\n");
 
     printf("Press : \n");
