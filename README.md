@@ -1,7 +1,8 @@
 # IP Catalogue
 
 ## Introduction
-**IP Catalogue** est un outil qui permet de cataloguer des adresses IP (IPv4). Il offre plusieurs fonctionnalités clés, notamment le stockage persistant des adresses IP, la possibilité de filtrer les adresses en fonction d’un masque, l’affichage des adresses IP sous différentes formes (binaire, hexadécimal, décimal), et la validation des entrées d’adresses IP pour garantir leur conformité.
+
+**IP Catalogue** est une application console qui permet de cataloguer des adresses IP (IPv4). Il offre plusieurs fonctionnalités clés, notamment le stockage persistant des adresses IP, la possibilité de filtrer les adresses en fonction d’un masque, l’affichage des adresses IP sous différentes formes (binaire, hexadécimal, décimal), et la validation des entrées d’adresses IP pour garantir leur conformité.
 
 ## Fonctionnalités
 
@@ -26,6 +27,7 @@ Exemples d'entrées invalides :
 - `172.45.223..1`
 
 ## Boucle principale
+
 Le programme ne se ferme pas sans que l'utilisateur le demande explicitement car il fonctionne comme un menu interactif. Les options suivantes sont disponibles via le menu :
 - **a** - Ajouter une nouvelle adresse IP
 - **l** - Liste des adresses IP
@@ -36,7 +38,7 @@ Le programme ne se ferme pas sans que l'utilisateur le demande explicitement car
 
 
 Exemple d'interaction :
-```
+
 a - Add a new IP address.
 l - List IP addresses.
 s - Search similar by mask.
@@ -53,11 +55,16 @@ The IP Address :  192.168.1.1 and The Mask : 255.255.0.0 are added successfully!
 Le programme continue à interagir avec l'utilisateur tant qu'il ne choisit pas l'option de quitter (**q**).
 
 
-
 ## Comment exécuter le programme
+
+Si vous n'avez pas gcc ou vous êtes sur un environnement autre que unix etc...
+Installer [docker](https://docs.docker.com/) et suivez les 2,3
 1. Clonez le dépôt du projet.
-2. Exécutez le fichier principal du programme.
-3. Suivez les instructions du menu interactif pour utiliser les fonctionnalités offertes par l'outil.
+2. générer l'image à partir du Dockerfile : docker build -t c-img .
+3. lancer le conteneur docker : docker run -ti -v $(pwd):/IP_Catalogue
+4. Compiler le programme main.c gcc main.c
+5. Exécuter le fichier a.out
+6. Suivez les instructions du menu interactif pour utiliser les fonctionnalités offertes par l'appplication.
 
 ## Remarques
 Assurez-vous que vous disposez des autorisations nécessaires pour conserver les données sur le système de fichiers  pour sauvegarder les adresses IP entre les sessions du programme.
