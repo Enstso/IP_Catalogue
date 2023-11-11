@@ -2,6 +2,43 @@
 #include <stdlib.h>
 #include <string.h>
 
+// DELETE IP FROM DATA.CSV
+void delete_ip(int id)
+{
+    FILE *data = fopen("data.csv", "r");
+    FILE *temp = fopen("temp.csv", "w");
+
+    char line[500];
+    int l = 0;
+
+    while (fgets(line, sizeof(line), data))
+    {
+        char *id_split = strtok(line, ",");
+        char *ip_address = strtok(NULL, ",");
+        char *mask = strtok(NULL, ",");
+        int current_id = atoi(id_split);
+
+        if (current_id != id)
+        {
+            if (l == 0)
+            {
+                fprintf(temp, "%s,%s,%s", "ID", ip_address, mask);
+            }
+            else
+            {
+                fprintf(temp, "%d,%s,%s", l, ip_address, mask);
+            }
+            l++;
+        }
+    }
+
+    fclose(data);
+    fclose(temp);
+
+    remove("data.csv");
+    rename("temp.csv", "data.csv");
+}
+
 void reverseList(int arr[], int size)
 {
     int start = size - 8;
@@ -447,7 +484,10 @@ int main()
             search();
             break;
         case 'd':
-            // delete();
+            int delete_id;
+            printf("Enter the ID : ");
+            scanf("%d", &delete_id);
+            delete_ip(delete_id);
             break;
         case 'q':
 
