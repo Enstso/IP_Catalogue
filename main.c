@@ -212,9 +212,9 @@ int search()
     int networkAdressMyTab[33];
     int networkAdressTab[33];
     printf("Enter address:\n");
-    scanf("%s", ip);
+    scanf(" %s", ip);
     printf("Enter mask;\n");
-    scanf("%s", mask);
+    scanf(" %s", mask);
     printf("%s", ip);
     splitIP(ipTab, ip);
     splitIP(maskTab, mask);
@@ -269,7 +269,7 @@ int search()
         networkAdress(binIp, binMask, networkAdressTab);
         verif = sameNetwork(networkAdressMyTab, networkAdressTab);
         int line_id;
-        if (sscanf(line, "%d", &line_id) == 1)
+        if (sscanf(line, " %d", &line_id) == 1)
         {
             if (verif == 0)
             {
@@ -321,7 +321,7 @@ int add_ip()
     int last_id = get_Id();
     id = last_id + 1;
 
-    FILE *file = fopen("data.csv", "a");
+    FILE *file = fopen("../data.csv", "a");
 
     if (file == NULL)
     {
@@ -330,9 +330,9 @@ int add_ip()
     }
 
     printf("Enter IP Address : ");
-    scanf("%s", ip_address);
+    scanf(" %s", ip_address);
     printf("Enter Mask Address : ");
-    scanf("%s", mask);
+    scanf(" %s", mask);
     splitIP(ipTab, ip_address);
     splitIP(maskTab, mask);
 
@@ -342,7 +342,7 @@ int add_ip()
     verif_mask += verifPoint(mask);
     if (verif_ip == 7 && verif_mask == 7)
     {
-        fprintf(file, "%d, %s, %s", id, ip_address, mask);
+        fprintf(file, "%d, %s, %s\n", id, ip_address, mask);
         printf("\n\n");
         printf("The IP Address : %s and The Mask : %s are added successfully!", ip_address, mask);
         printf("\n\n");
@@ -402,7 +402,7 @@ int list_ip()
         }
 
         int line_id;
-        if (sscanf(line, "%d", &line_id) == 1)
+        if (sscanf(line, " %d", &line_id) == 1)
         {
             printf("[%s]. \n", id);
             printf("      IP Address : %s\n", ip_address);
@@ -470,7 +470,7 @@ int main()
     while (select != 'q')
     {
         printf("Please choose one : ");
-        scanf("%c", &select);
+        scanf(" %c", &select);
 
         switch (select)
         {
@@ -485,7 +485,7 @@ int main()
             break;
         case 'd':
             printf("Enter the ID : ");
-            scanf("%d", &delete_id);
+            scanf(" %d", &delete_id);
             delete_ip(delete_id);
             break;
             
