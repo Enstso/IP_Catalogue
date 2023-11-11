@@ -35,8 +35,7 @@ void delete_ip(int id)
 
     remove("data.csv");
     rename("temp.csv", "data.csv");
-
- }
+}
 void reverseList(int arr[], int size)
 {
     int start = size - 8;
@@ -191,7 +190,7 @@ void splitIP(int tab[], char ip[])
     {
         char *ptr;
         tab[i] = strtol(traitement, &ptr, 10);
-        if(ptr == traitement || *ptr !='\0')
+        if (ptr == traitement || *ptr != '\0')
         {
             break;
         }
@@ -365,7 +364,7 @@ int list_ip()
     FILE *file = fopen("data.csv", "r");
     int ipTab[5];
     int maskTab[5];
-     int binIp[32];
+    int binIp[32];
     int binMask[32];
 
     if (file == NULL)
@@ -386,7 +385,7 @@ int list_ip()
         char *id = strtok(line, ",");
         char *ip_address = strtok(NULL, ",");
         char *mask = strtok(NULL, ",");
-       
+
         splitIP(ipTab, ip_address);
         splitIP(maskTab, mask);
 
@@ -465,7 +464,7 @@ int main()
 {
 
     logo();
-    int delete_id=0;
+    int delete_id = 0;
     char select = ' ';
 
     while (select != 'q')
@@ -489,7 +488,7 @@ int main()
             scanf("%d", &delete_id);
             delete_ip(delete_id);
             break;
-            
+
         case 'q':
             printf("Exiting....");
             exit(1);
