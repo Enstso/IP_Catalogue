@@ -2,6 +2,41 @@
 #include <stdlib.h>
 #include <string.h>
 
+void delete_ip(int id)
+{
+    FILE *data = fopen("data.csv", "r");
+    FILE *temp = fopen("temp.csv", "w");
+
+    char line[1024];
+    int l = 0;
+
+    while (fgets(line, sizeof(line), data))
+    {
+        char *id_split = strtok(line, ",");
+        char *ip_address = strtok(NULL, ",");
+        char *mask = strtok(NULL, ",");
+        int current_id = atoi(id_split);
+
+        if (current_id != id)
+        {
+            if (l == 0)
+            {
+                fprintf(temp, "%s,%s,%s", "ID", ip_address, mask);
+            }
+            else
+            {
+                fprintf(temp, "%d,%s,%s", l, ip_address, mask);
+            }
+            l++;
+        }
+    }
+    fclose(data);
+    fclose(temp);
+
+    remove("data.csv");
+    rename("temp.csv", "data.csv");
+
+ }
 void reverseList(int arr[], int size)
 {
     int start = size - 8;
@@ -33,7 +68,6 @@ int VerifierIP(int ip[4])
             compteur++;
         }
     }
-    printf("%d", compteur);
     return compteur;
 }
 
@@ -153,11 +187,16 @@ void splitIP(int tab[], char ip[])
     int i = 0;
 
     traitement = strtok(copy, ".");
-
     while (traitement != NULL && i < 4)
     {
-        tab[i++] = atoi(traitement);
+        char *ptr;
+        tab[i] = strtol(traitement, &ptr, 10);
+        if(ptr == traitement || *ptr !='\0')
+        {
+            break;
+        }
         traitement = strtok(NULL, ".");
+        i++;
     }
 }
 
@@ -304,7 +343,7 @@ int add_ip()
     verif_mask += verifPoint(mask);
     if (verif_ip == 7 && verif_mask == 7)
     {
-        fprintf(file, "\n%d, %s, %s", id, ip_address, mask);
+        fprintf(file, "%d, %s, %s", id, ip_address, mask);
         printf("\n\n");
         printf("The IP Address : %s and The Mask : %s are added successfully!", ip_address, mask);
         printf("\n\n");
@@ -326,7 +365,7 @@ int list_ip()
     FILE *file = fopen("data.csv", "r");
     int ipTab[5];
     int maskTab[5];
-    int binIp[32];
+     int binIp[32];
     int binMask[32];
 
     if (file == NULL)
@@ -344,11 +383,10 @@ int list_ip()
     while (fgets(line, sizeof(line), file) != NULL)
     {
         int size = 0;
-        int size2 = 0;
         char *id = strtok(line, ",");
         char *ip_address = strtok(NULL, ",");
         char *mask = strtok(NULL, ",");
-
+       
         splitIP(ipTab, ip_address);
         splitIP(maskTab, mask);
 
@@ -357,11 +395,11 @@ int list_ip()
             size += 8;
             bibine(ipTab[j], binIp, size);
         }
-
+        size = 0;
         for (int v = 0; v < 4; v++)
         {
-            size2 += 8;
-            bibine(maskTab[v], binMask, size2);
+            size += 8;
+            bibine(maskTab[v], binMask, size);
         }
 
         int line_id;
@@ -427,7 +465,7 @@ int main()
 {
 
     logo();
-
+    int delete_id=0;
     char select = ' ';
 
     while (select != 'q')
@@ -447,10 +485,12 @@ int main()
             search();
             break;
         case 'd':
-            // delete();
+            printf("Enter the ID : ");
+            scanf("%d", &delete_id);
+            delete_ip(delete_id);
             break;
+            
         case 'q':
-
             printf("Exiting....");
             exit(1);
             break;
