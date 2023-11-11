@@ -299,11 +299,10 @@ int get_Id()
 
     while (fgets(line, sizeof(line), file) != NULL)
     {
-        int line_id;
-        if (sscanf(line, "%d", &line_id) == 1)
-        {
-            last_id = line_id;
-        }
+        char *id = strtok(line, ",");
+        int line_id = atoi(id);
+
+        last_id = line_id;
     }
 
     fclose(file);
