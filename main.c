@@ -321,7 +321,7 @@ int add_ip()
     int last_id = get_Id();
     id = last_id + 1;
 
-    FILE *file = fopen("../data.csv", "a");
+    FILE *file = fopen("data.csv", "a");
 
     if (file == NULL)
     {
