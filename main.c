@@ -181,7 +181,7 @@ unsigned int sameNetwork(unsigned int tab1[33], unsigned int tab2[33])
 
 void splitIP(unsigned int tab[4], char ip[16])
 {
-    size_t len = strlen(ip)+1;
+    size_t len = strlen(ip);
     char copy[len];
     strcpy(copy, ip);
 
