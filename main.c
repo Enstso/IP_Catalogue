@@ -2,20 +2,20 @@
 #include <stdlib.h>
 #include <string.h>
 
-void delete_ip(int id)
+void delete_ip(unsigned int id)
 {
     FILE *data = fopen("data.csv", "r");
     FILE *temp = fopen("temp.csv", "w");
 
     char line[1024];
-    int l = 0;
+    unsigned int l = 0;
 
     while (fgets(line, sizeof(line), data))
     {
-        char *id_split = strtok(line, ",");
-        char *ip_address = strtok(NULL, ",");
-        char *mask = strtok(NULL, ",");
-        int current_id = atoi(id_split);
+         char *id_split = strtok(line, ",");
+         char *ip_address = strtok(NULL, ",");
+         char *mask = strtok(NULL, ",");
+         int current_id = atoi(id_split);
 
         if (current_id != id)
         {
@@ -37,30 +37,30 @@ void delete_ip(int id)
     rename("temp.csv", "data.csv");
 
  }
-void reverseList(int arr[], int size)
+void reverseList(unsigned int tab[],unsigned int size)
 {
-    int start = size - 8;
+    unsigned int start = size - 8;
     if (size == 8)
     {
         start = 0;
     }
 
-    int end = size - 1;
+    unsigned int end = size - 1;
 
     while (start < end)
     {
-        int temp = arr[start];
-        arr[start] = arr[end];
-        arr[end] = temp;
+        unsigned int temp = tab[start];
+        tab[start] = tab[end];
+        tab[end] = temp;
 
         start++;
         end--;
     }
 }
 
-int VerifierIP(int ip[4])
+int VerifierIP(unsigned int ip[4])
 {
-    int compteur = 0;
+    unsigned int compteur = 0;
     for (int i = 0; i < 4; i++)
     {
         if (ip[i] >= 0 && ip[i] <= 255)
@@ -71,7 +71,7 @@ int VerifierIP(int ip[4])
     return compteur;
 }
 
-int verifPoint(char ip[17])
+int verifPoint(unsigned char ip[17])
 {
     int i = 0;
     int compteur = 0;
@@ -85,14 +85,14 @@ int verifPoint(char ip[17])
     }
     return compteur;
 }
-void hexa(int ipTab[4])
+void hexa(unsigned int ipTab[4])
 {
 
     for (int i = 0; i < 4; i++)
     {
-        char hexa[100];
-        int index = 0;
-        int number = 0;
+        unsigned char hexa[100];
+        unsigned int index = 0;
+        unsigned int number = 0;
         number = ipTab[i];
         if (number == 0)
         {
@@ -100,17 +100,17 @@ void hexa(int ipTab[4])
         }
         while (number)
         {
-            int calc = number % 16;
+            unsigned int calc = number % 16;
 
             if (calc < 10)
             {
-                hexa[index++] = calc + '0';
+                hexa[index] = calc + '0';
             }
             else
             {
-                hexa[index++] = calc + 55;
+                hexa[index] = calc + 55;
             }
-
+            index++;
             number = number / 16;
         }
 
@@ -123,16 +123,16 @@ void hexa(int ipTab[4])
     printf("\n");
 }
 
-void bibine(int n, int tab[33], int size)
+void bibine(unsigned int n,unsigned int tab[33], unsigned int size)
 {
-    int temp = 0;
-    int bin = 0;
-    int init = size - 8;
+    unsigned int temp = 0;
+    unsigned int bin = 0;
+    unsigned int init = size - 8;
     if (size == 8)
     {
-        int init = 0;
+        unsigned int init = 0;
     }
-    for (int i = init; i < size; i++)
+    for (unsigned int i = init; i < size; i++)
     {
 
         if (n % 2 == 0)
@@ -149,9 +149,9 @@ void bibine(int n, int tab[33], int size)
     reverseList(tab, size);
 }
 
-void networkAdress(int ip[33], int mask[33], int networkAdress[33])
+void networkAdress(unsigned int ip[33], unsigned int mask[33], unsigned int networkAdress[33])
 {
-    int networkSum = 0;
+    unsigned int networkSum = 0;
     for (int i = 0; i < 33; i++)
     {
         if (ip[i] + mask[i] == 2)
@@ -165,9 +165,9 @@ void networkAdress(int ip[33], int mask[33], int networkAdress[33])
     }
 }
 
-int sameNetwork(int tab1[33], int tab2[33])
+unsigned int sameNetwork(unsigned int tab1[33], unsigned int tab2[33])
 {
-    int verif = 0;
+    unsigned int verif = 0;
     for (int i = 0; i < 33; i++)
     {
         if (tab1[i] != tab2[i])
@@ -178,9 +178,10 @@ int sameNetwork(int tab1[33], int tab2[33])
     return verif;
 }
 
-void splitIP(int tab[], char ip[])
+void splitIP(unsigned int tab[4], unsigned char ip[])
 {
-    char copy[strlen(ip) + 1];
+    unsigned int size = strlen(ip)+1;
+    char copy[size];
     strcpy(copy, ip);
 
     char *traitement = NULL;
@@ -202,18 +203,18 @@ void splitIP(int tab[], char ip[])
 
 int search()
 {
-    char ip[13] = "\0";
-    char mask[13] = "\0";
-    int ipTab[4];
-    int maskTab[4];
-    int binIp[33];
-    int binMask[33];
-    int size = 0;
-    int networkAdressMyTab[33];
-    int networkAdressTab[33];
+    unsigned char ip[13] = "\0";
+    unsigned char mask[13] = "\0";
+    unsigned int ipTab[4];
+    unsigned int maskTab[4];
+    unsigned int binIp[33];
+    unsigned int binMask[33];
+    unsigned int size = 0;
+    unsigned int networkAdressMyTab[33];
+    unsigned int networkAdressTab[33];
     printf("Enter address:\n");
     scanf(" %s", ip);
-    printf("Enter mask;\n");
+    printf("Enter mask:\n");
     scanf(" %s", mask);
     printf("%s", ip);
     splitIP(ipTab, ip);
@@ -283,8 +284,8 @@ int search()
     return 0;
 }
 
-//  TO GET HOLD OF THE LAST INSERTED DATA'S ID
-int get_Id()
+
+unsigned int get_Id()
 {
     FILE *file = fopen("data.csv", "r");
 
@@ -295,7 +296,7 @@ int get_Id()
     }
 
     char line[1024];
-    int last_id = 0;
+    unsigned int last_id = 0;
 
     while (fgets(line, sizeof(line), file) != NULL)
     {
@@ -310,15 +311,15 @@ int get_Id()
     return last_id;
 }
 
-// ADD NEW IP/MASK INTO DATA.CSV
-int add_ip()
+
+unsigned int add_ip()
 {
-    int id;
-    char ip_address[17] = "\0";
-    char mask[17] = "\0";
-    int ipTab[4];
-    int maskTab[4];
-    int last_id = get_Id();
+    unsigned int id=0;
+    unsigned char ip_address[17] = "\0";
+    unsigned char mask[17] = "\0";
+    unsigned int ipTab[4];
+    unsigned int maskTab[4];
+    unsigned int last_id = get_Id();
     id = last_id + 1;
 
     FILE *file = fopen("data.csv", "a");
@@ -336,8 +337,8 @@ int add_ip()
     splitIP(ipTab, ip_address);
     splitIP(maskTab, mask);
 
-    int verif_ip = VerifierIP(ipTab);
-    int verif_mask = VerifierIP(maskTab);
+    unsigned int verif_ip = VerifierIP(ipTab);
+    unsigned int verif_mask = VerifierIP(maskTab);
     verif_ip += verifPoint(ip_address);
     verif_mask += verifPoint(mask);
     if (verif_ip == 7 && verif_mask == 7)
@@ -358,14 +359,13 @@ int add_ip()
     return 0;
 }
 
-//  TO PRINTOUT THE LIST OF IP ADDRESSES
-int list_ip()
+unsigned int list_ip()
 {
     FILE *file = fopen("data.csv", "r");
-    int ipTab[5];
-    int maskTab[5];
-     int binIp[32];
-    int binMask[32];
+    unsigned int  ipTab[4];
+    unsigned int maskTab[4];
+    unsigned int binIp[32];
+    unsigned int binMask[32];
 
     if (file == NULL)
     {
@@ -381,7 +381,7 @@ int list_ip()
 
     while (fgets(line, sizeof(line), file) != NULL)
     {
-        int size = 0;
+        unsigned int size = 0;
         char *id = strtok(line, ",");
         char *ip_address = strtok(NULL, ",");
         char *mask = strtok(NULL, ",");
@@ -401,7 +401,7 @@ int list_ip()
             bibine(maskTab[v], binMask, size);
         }
 
-        int line_id;
+        unsigned int line_id;
         if (sscanf(line, " %d", &line_id) == 1)
         {
             printf("[%s]. \n", id);
@@ -439,7 +439,6 @@ int list_ip()
     return 0;
 }
 
-// PRINTOUT THE INTOR/HEADER PART (LOGO,GROUP-INFO,.....)
 void logo()
 {
     char Logo[] = "██╗██████╗░  ░█████╗░░░░░░░░█████╗░████████╗░█████╗░██╗░░░░░░█████╗░░██████╗░██╗░░░██╗███████╗ \n██║██╔══██╗  ██╔══██╗░░░░░░██╔══██╗╚══██╔══╝██╔══██╗██║░░░░░██╔══██╗██╔════╝░██║░░░██║██╔════╝ \n██║██████╔╝  ██║░░╚═╝█████╗███████║░░░██║░░░███████║██║░░░░░██║░░██║██║░░██╗░██║░░░██║█████╗░░ \n██║██╔═══╝░  ██║░░██╗╚════╝██╔══██║░░░██║░░░██╔══██║██║░░░░░██║░░██║██║░░╚██╗██║░░░██║██╔══╝░░ \n██║██║░░░░░  ╚█████╔╝░░░░░░██║░░██║░░░██║░░░██║░░██║███████╗╚█████╔╝╚██████╔╝╚██████╔╝███████╗ \n╚═╝╚═╝░░░░░  ░╚════╝░░░░░░░╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝╚══════╝░╚════╝░░╚═════╝░░╚═════╝░╚══════╝";
@@ -449,6 +448,8 @@ void logo()
     printf("\n\n");
     printf("Created by : \n\n");
     printf("    1.  JANVIER Enstso \n");
+    printf("    2.  OUCHERIF Lounis \n");
+    printf("    3.  FERNANDO PRICARD Diron Polson \n");
     printf("\n\n");
 
     printf("Press : \n");
@@ -464,7 +465,7 @@ int main()
 {
 
     logo();
-    int delete_id=0;
+    unsigned int delete_id=0;
     char select = ' ';
 
     while (select != 'q')

@@ -58,12 +58,30 @@ Le programme continue à interagir avec l'utilisateur tant qu'il ne choisit pas 
 ## Comment exécuter le programme
 
 Si vous n'avez pas gcc ou vous êtes sur un environnement autre que unix etc...
-Installer [docker](https://docs.docker.com/) et suivez les 2,3
+Installer [docker](https://docs.docker.com/) et suivez les étapes 2,3
+
 1. Clonez le dépôt du projet.
-2. générer l'image à partir du Dockerfile : docker build -t c-img .
-3. lancer le conteneur docker : docker run -ti -v $(pwd):/IP_Catalogue
-4. Compiler le programme main.c gcc main.c
-5. Exécuter le fichier a.out
+
+2. générer l'image à partir du Dockerfile: 
+ ```bash
+docker build -t c-img .
+```
+3. lancer le conteneur docker: 
+ ```bash
+docker run -ti -v $(pwd):/IP_Catalogue c-img
+```
+
+4. Compiler le programme main.c dans le container:
+ 
+ ```bash
+ gcc main.c
+```
+
+5. Exécuter le fichier:
+```bash
+ ./a.out
+```
+
 6. Suivez les instructions du menu interactif pour utiliser les fonctionnalités offertes par l'appplication.
 
 ## Remarques
