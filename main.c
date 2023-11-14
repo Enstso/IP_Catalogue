@@ -153,7 +153,7 @@ void bibine(unsigned int n,unsigned int tab[33], unsigned int size)
 void networkAdress(unsigned int ip[33], unsigned int mask[33], unsigned int networkAdress[33])
 {
     unsigned int networkSum = 0;
-    for (int i = 0; i < 33; i++)
+    for (int i = 0; i < 32; i++)
     {
         if (ip[i] + mask[i] == 2)
         {
@@ -169,7 +169,7 @@ void networkAdress(unsigned int ip[33], unsigned int mask[33], unsigned int netw
 unsigned int sameNetwork(unsigned int tab1[33], unsigned int tab2[33])
 {
     unsigned int verif = 0;
-    for (int i = 0; i < 33; i++)
+    for (int i = 0; i < 32; i++)
     {
         if (tab1[i] != tab2[i])
         {
