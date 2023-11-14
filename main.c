@@ -1,18 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#define MAXLINE 1024
 
 void delete_ip(unsigned int id)
 {
     FILE *data = fopen("data.csv", "r");
     FILE *temp = fopen("temp.csv", "w");
 
-    char line[1024];
+    char row[MAXLINE];
     unsigned int l = 0;
 
-    while (fgets(line, sizeof(line), data))
+    while (fgets(row, MAXLINE, data))
     {
-         char *id_split = strtok(line, ",");
+         char *id_split = strtok(row, ",");
          char *ip_address = strtok(NULL, ",");
          char *mask = strtok(NULL, ",");
          int current_id = atoi(id_split);
@@ -71,7 +72,7 @@ int VerifierIP(unsigned int ip[4])
     return compteur;
 }
 
-int verifPoint(unsigned char ip[17])
+int verifPoint(char ip[16])
 {
     int i = 0;
     int compteur = 0;
@@ -178,10 +179,10 @@ unsigned int sameNetwork(unsigned int tab1[33], unsigned int tab2[33])
     return verif;
 }
 
-void splitIP(unsigned int tab[4], unsigned char ip[])
+void splitIP(unsigned int tab[4], char ip[16])
 {
-    unsigned int size = strlen(ip)+1;
-    char copy[size];
+    size_t len = strlen(ip)+1;
+    char copy[len];
     strcpy(copy, ip);
 
     char *traitement = NULL;
@@ -203,8 +204,8 @@ void splitIP(unsigned int tab[4], unsigned char ip[])
 
 int search()
 {
-    unsigned char ip[13] = "\0";
-    unsigned char mask[13] = "\0";
+    char ip[13] = "\0";
+    char mask[13] = "\0";
     unsigned int ipTab[4];
     unsigned int maskTab[4];
     unsigned int binIp[33];
@@ -241,17 +242,17 @@ int search()
         printf("Failed to open the file for reading.\n");
         return 1;
     }
-    char line[1024];
+    char row[MAXLINE];
     printf("\n addresses found: \n");
 
-    while (fgets(line, sizeof(line), file) != NULL)
+    while (fgets(row, MAXLINE, file) != NULL)
     {
         int verif = 0;
         char *id = "\0";
         char *ip_address = "\0";
         char *maskchar = "\0";
         size = 0;
-        id = strtok(line, ",");
+        id = strtok(row, ",");
         ip_address = strtok(NULL, ",");
         maskchar = strtok(NULL, ",");
         splitIP(ipTab, ip_address);
@@ -270,7 +271,7 @@ int search()
         networkAdress(binIp, binMask, networkAdressTab);
         verif = sameNetwork(networkAdressMyTab, networkAdressTab);
         int line_id;
-        if (sscanf(line, " %d", &line_id) == 1)
+        if (sscanf(row, " %d", &line_id) == 1)
         {
             if (verif == 0)
             {
@@ -295,12 +296,12 @@ unsigned int get_Id()
         return 1;
     }
 
-    char line[1024];
+    char row[MAXLINE];
     unsigned int last_id = 0;
 
-    while (fgets(line, sizeof(line), file) != NULL)
+    while (fgets(row, MAXLINE, file) != NULL)
     {
-        char *id = strtok(line, ",");
+        char *id = strtok(row, ",");
         int line_id = atoi(id);
 
         last_id = line_id;
@@ -315,8 +316,8 @@ unsigned int get_Id()
 unsigned int add_ip()
 {
     unsigned int id=0;
-    unsigned char ip_address[17] = "\0";
-    unsigned char mask[17] = "\0";
+    char ip_address[16] = "\0";
+    char mask[16] = "\0";
     unsigned int ipTab[4];
     unsigned int maskTab[4];
     unsigned int last_id = get_Id();
@@ -362,7 +363,7 @@ unsigned int add_ip()
 unsigned int list_ip()
 {
     FILE *file = fopen("data.csv", "r");
-    unsigned int  ipTab[4];
+    unsigned int ipTab[4];
     unsigned int maskTab[4];
     unsigned int binIp[32];
     unsigned int binMask[32];
@@ -373,16 +374,16 @@ unsigned int list_ip()
         return 0;
     }
 
-    char line[1024];
+    char row[MAXLINE];
 
     printf("+---------------------------------------------------------------+\n");
     printf("|                      IP Addresses List                        |\n");
     printf("+---------------------------------------------------------------+\n");
 
-    while (fgets(line, sizeof(line), file) != NULL)
+    while (fgets(row, MAXLINE, file) != NULL)
     {
         unsigned int size = 0;
-        char *id = strtok(line, ",");
+        char *id = strtok(row, ",");
         char *ip_address = strtok(NULL, ",");
         char *mask = strtok(NULL, ",");
        
@@ -402,7 +403,7 @@ unsigned int list_ip()
         }
 
         unsigned int line_id;
-        if (sscanf(line, " %d", &line_id) == 1)
+        if (sscanf(row, " %d", &line_id) == 1)
         {
             printf("[%s]. \n", id);
             printf("      IP Address : %s\n", ip_address);
