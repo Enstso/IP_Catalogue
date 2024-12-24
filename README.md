@@ -1,88 +1,82 @@
-# IP Catalogue
-
 ## Introduction
 
-**IP Catalogue** est une application console qui permet de cataloguer des adresses IP (IPv4). Il offre plusieurs fonctionnalités clés, notamment le stockage persistant des adresses IP, la possibilité de filtrer les adresses en fonction d’un masque, l’affichage des adresses IP sous différentes formes (binaire, hexadécimal, décimal), et la validation des entrées d’adresses IP pour garantir leur conformité.
+**IP Catalogue** is a console application designed to catalog IPv4 addresses. It offers several key features, including persistent storage of IP addresses, filtering addresses based on a mask, displaying addresses in various formats (binary, hexadecimal, decimal), and validating input to ensure compliance with IPv4 standards.
 
-## Fonctionnalités
+## Features
 
-### 1) Persistance
-Le programme stocke les adresses IP de manière permanente, ce qui signifie que les adresses IP ajoutées sont sauvegardées entre les différentes exécutions du programme.De cette façon, l’utilisateur peut construire et maintenir un catalogue d’adresses IP au fil du temps.
+### 1) Persistence
+The program permanently stores IP addresses, meaning added addresses are saved between program executions. This allows users to build and maintain a catalog of IP addresses over time.
 
-### 2) Filtrage par masque
-Le programme permet a utilisateur de filtrer les adresses IP en fonction d'un masque spécifié. L'utilisateur fournit une adresse IP et un masque, puis le programme renvoie les adresses IP stockées avec le meme masque.
+### 2) Mask-Based Filtering
+Users can filter stored IP addresses based on a specified mask. By providing an IP address and a mask, the program returns stored IPs that match the given mask.
 
-### 3) Binaire/hexadécimal/décimal
-Les adresses IP peuvent être affichées en binaire, en hexadécimal et en décimal. Cette fonctionnalité permet à l'utilisateur d'afficher les adresses IP de manière appropriée.
-
-
+### 3) Binary/Hexadecimal/Decimal Display
+IP addresses can be displayed in binary, hexadecimal, and decimal formats. This flexibility allows users to view IPs in the format best suited to their needs.
 
 ### 4) Validation
-Une validation rigoureuse est mise en place pour s'assurer que seules les adresses IP authentiques sont autorisées. Les caractères non autorisés, les valeurs numériques qui ne sont pas dans la plage valide (0-255), les segments manquants ou les points d'adresse mal positionnés sont des exemples d'entrées invalides.
+The program enforces strict validation to ensure only authentic IP addresses are allowed. Invalid entries include unauthorized characters, out-of-range values (0-255), missing segments, or misplaced dots.
 
-Exemples d'entrées invalides :
+Examples of invalid entries:
 - `afs.213.sf.23ew`
 - `300.192.1.2`
 - `-12.23.12.23`
 - `172.45.223..1`
 
-## Boucle principale
+## Main Loop
 
-Le programme ne se ferme pas sans que l'utilisateur le demande explicitement car il fonctionne comme un menu interactif. Les options suivantes sont disponibles via le menu :
-- **a** - Ajouter une nouvelle adresse IP
-- **l** - Liste des adresses IP
-- **s** - Rechercher des adresses similaires par masque
-- **d** - Supprimer une adresse IP
-- **q** - Quitter
+The program operates as an interactive menu and will not exit unless explicitly requested by the user. The following options are available in the menu:
+- **a** - Add a new IP address
+- **l** - List stored IP addresses
+- **s** - Search similar addresses by mask
+- **d** - Delete an IP address
+- **q** - Quit
 
+### Example Interaction
 
-
-Exemple d'interaction :
-
+```plaintext
 a - Add a new IP address.
 l - List IP addresses.
 s - Search similar by mask.
 d - Delete an IP.
-q - quit.
+q - Quit.
 
-Please choose one : a
+Please choose one: a
 
-Enter IP Address :  192.168.1.1
-Enter Mask Address : 255.255.0.0
+Enter IP Address: 192.168.1.1
+Enter Mask Address: 255.255.0.0
 
-The IP Address :  192.168.1.1 and The Mask : 255.255.0.0 are added successfully!
+The IP Address: 192.168.1.1 and The Mask: 255.255.0.0 are added successfully!
+```
+The program continues to interact with the user until the quit option (**q**) is selected.
 
-Le programme continue à interagir avec l'utilisateur tant qu'il ne choisit pas l'option de quitter (**q**).
 
+## How to Run the Program
 
-## Comment exécuter le programme
+If you do not have GCC or are using a non-Unix environment, you can use [docker](https://docs.docker.com/) and follow steps 2 and 3.
 
-Si vous n'avez pas gcc ou vous êtes sur un environnement autre que unix etc...
-Installer [docker](https://docs.docker.com/) et suivez les étapes 2,3
+1. Clone the project repository.
 
-1. Clonez le dépôt du projet.
-
-2. générer l'image à partir du Dockerfile: 
+2. Build the Docker image from the Dockerfile:
  ```bash
 docker build -t c-img .
 ```
-3. lancer le conteneur docker: 
+3. Run the Docker container:
  ```bash
 docker run -ti -v $(pwd):/IP_Catalogue c-img
 ```
 
-4. Compiler le programme main.c dans le container:
+4. Compile the main.c program inside the container:
  
  ```bash
  gcc main.c
 ```
 
-5. Exécuter le fichier:
+5. Run the compiled program:
 ```bash
  ./a.out
 ```
 
-6. Suivez les instructions du menu interactif pour utiliser les fonctionnalités offertes par l'appplication.
+6. Follow the interactive menu instructions to use the application's features.
 
-## Remarques
-Assurez-vous que vous disposez des autorisations nécessaires pour conserver les données sur le système de fichiers  pour sauvegarder les adresses IP entre les sessions du programme.
+## Notes
+Ensure you have the necessary permissions to store data on the file system. This is required to persist IP addresses across program sessions.
